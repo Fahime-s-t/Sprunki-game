@@ -1,0 +1,73 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.sprunki-options {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.sprunki-option {
+  width: 50px;
+  height: 50px;
+  margin: 0 10px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+}
+
+.sprunki-option.selected {
+  border-color: #007bff;
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  grid-gap: 10px;
+}
+
+.grid-cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+}
+
+.grid-cell.empty {
+  background-color: #fff;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
