@@ -1,43 +1,140 @@
+// ================================
+// Sprunki Pattern Maker - script.js
+// ================================
+
+// Select elements
 const sprunkiOptions = document.querySelectorAll('.sprunki-option');
 const patternGrid = document.querySelector('.pattern-grid');
 const resetButton = document.getElementById('reset-button');
-let selectedSprunki = 'blue'; // Default selected Sprunki
+const patternButton = document.getElementById('pattern-button');
 
-// Add event listeners to Sprunki options
+// Settings
+const GRID_SIZE = 5;
+let selectedSprunki = 'blue';
+
+// Store grid cells in a 2D array
+const gridCells = [];
+
+// ================================
+// Sprunki selection
+// ================================
 sprunkiOptions.forEach(option => {
   option.addEventListener('click', () => {
-    // Remove 'selected' class from all options
     sprunkiOptions.forEach(o => o.classList.remove('selected'));
-
-    // Add 'selected' class to the clicked option
     option.classList.add('selected');
-
-    // Update selected Sprunki
     selectedSprunki = option.dataset.sprunki;
   });
 });
 
-// Create grid cells
-for (let i = 0; i < 25; i++) {
-  const gridCell = document.createElement('div');
-  gridCell.classList.add('grid-cell', 'empty');
-  gridCell.addEventListener('click', () => {
-    if (gridCell.classList.contains('empty')) {
-      gridCell.classList.remove('empty');
-      gridCell.style.backgroundImage = `url(${selectedSprunki}-sprunki.png)`;
-    } else {
-      gridCell.classList.add('empty');
-      gridCell.style.backgroundImage = '';
-    }
-  });
-  patternGrid.appendChild(gridCell);
+// ================================
+// Create grid
+// ================================
+for (let row = 0; row < GRID_SIZE; row++) {
+  gridCells[row] = [];
+
+  for (let col = 0; col < GRID_SIZE; col++) {
+    const cell = document.createElement('div');
+    cell.classList.add('grid-cell', 'empty');
+
+    cell.addEventListener('click', () => {
+      if (cell.classList.contains('empty')) {
+        cell.classList.remove('empty');
+        cell.style.backgroundImage = `url(${selectedSprunki}-sprunki.png)`;
+      } else {
+        cell.classList.add('empty');
+        cell.style.backgroundImage = '';
+      }
+    });
+
+    gridCells[row][col] = cell;
+    patternGrid.appendChild(cell);
+  }
 }
 
-// Reset button functionality
+// ================================
+// Pattern detection
+// ================================
+function getFullRowPattern() {
+  for (let row = 0; row < GRID_SIZE; row++) {
+    let pattern = [];
+    let full = true;
+
+    for (let col = 0; col < GRID_SIZE; col++) {
+      if (gridCells[row][col].classList.contains('empty')) {
+        full = false;
+        break;
+      }
+      pattern.push(gridCells[row][col].style.backgroundImage);
+    }
+
+    if (full) return pattern;
+  }
+  return null;
+}
+
+function getFullColumnPattern() {
+  for (let col = 0; col < GRID_SIZE; col++) {
+    let pattern = [];
+    let full = true;
+
+    for (let row = 0; row < GRID_SIZE; row++) {
+      if (gridCells[row][col].classList.contains('empty')) {
+        full = false;
+        break;
+      }
+      pattern.push(gridCells[row][col].style.backgroundImage);
+    }
+
+    if (full) return pattern;
+  }
+  return null;
+}
+
+// ================================
+// Apply patterns
+// ================================
+function applyRowPattern(pattern) {
+  for (let row = 0; row < GRID_SIZE; row++) {
+    for (let col = 0; col < GRID_SIZE; col++) {
+      gridCells[row][col].classList.remove('empty');
+      gridCells[row][col].style.backgroundImage = pattern[col];
+    }
+  }
+}
+
+function applyColumnPattern(pattern) {
+  for (let col = 0; col < GRID_SIZE; col++) {
+    for (let row = 0; row < GRID_SIZE; row++) {
+      gridCells[row][col].classList.remove('empty');
+      gridCells[row][col].style.backgroundImage = pattern[row];
+    }
+  }
+}
+
+// ================================
+// Create Pattern button
+// ================================
+patternButton.addEventListener('click', () => {
+  const rowPattern = getFullRowPattern();
+  const columnPattern = getFullColumnPattern();
+
+  if (rowPattern) {
+    applyRowPattern(rowPattern);
+  } else if (columnPattern) {
+    applyColumnPattern(columnPattern);
+  } else {
+    alert('Please fill one complete row or column first!');
+  }
+});
+
+// ================================
+// Reset button
+// ================================
 resetButton.addEventListener('click', () => {
-  const gridCells = document.querySelectorAll('.grid-cell');
-  gridCells.forEach(cell => {
-    cell.classList.add('empty');
-    cell.style.backgroundImage = '';
-  });
+  for (let row = 0; row < GRID_SIZE; row++) {
+    for (let col = 0; col < GRID_SIZE; col++) {
+      gridCells[row][col].classList.add('empty');
+      gridCells[row][col].style.backgroundImage = '';
+    }
+  }
 });
