@@ -6,7 +6,8 @@
 const sprunkiOptions = document.querySelectorAll('.sprunki-option');
 const patternGrid = document.querySelector('.pattern-grid');
 const resetButton = document.getElementById('reset-button');
-const patternButton = document.getElementById('pattern-button');
+const patternButton = document.getElementById('patternButton');
+
 
 // Settings
 const GRID_SIZE = 5;
